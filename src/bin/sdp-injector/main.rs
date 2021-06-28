@@ -232,9 +232,9 @@ fn patch_request(request_body: &str, sdp_sidecars: &SDPSidecars) -> Result<Admis
 }
 
 fn validate_request(request_body: &str, sdp_sidecars: &SDPSidecars) -> Result<AdmissionReview<DynamicObject>, Box<dyn Error>> {
-    let admision_review = serde_json::from_str::<AdmissionReview<Pod>>(&request_body)
+    let admission_review = serde_json::from_str::<AdmissionReview<Pod>>(&request_body)
         .map_err(|e| format!("Error parsing payload: {}", e.to_string()))?;
-    let admission_request: AdmissionRequest<Pod> = admision_review.try_into()?;
+    let admission_request: AdmissionRequest<Pod> = admission_review.try_into()?;
     let pod = admission_request.object.as_ref().ok_or("Admission review does not contain a POD")?;
     let sdp_pod = SDPPod { pod, sdp_sidecars };
     let mut admission_response = AdmissionResponse::from(&admission_request);
